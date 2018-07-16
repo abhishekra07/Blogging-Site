@@ -1,0 +1,1 @@
+<h3>Welcome  <?php echo $user['username']; ?></h3>
