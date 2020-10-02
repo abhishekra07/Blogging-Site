@@ -21,6 +21,7 @@ class Login extends CI_Controller{
 		}
 	}
 
+	
 	public function check(){
 			$data = array(
 				'username' => $this->input->post('username'),
@@ -38,7 +39,9 @@ class Login extends CI_Controller{
 				$this->session->set_flashdata('login_failed','Incorrect Username/Password');
 				$this->load->view('Dashboard/login');		}
 		}
-public function user_login(){
+	
+	//Authenticate user login to blog web page
+	public function user_login(){
 		if($this->session->userdata('user_id'))
 		{
 			return redirect('User_controller');
@@ -49,7 +52,7 @@ public function user_login(){
 		
 	}
 
-
+	//to register user
 	public function register(){
 		$data = array(
 			'username' => $this->input->post('username'),
@@ -66,6 +69,8 @@ public function user_login(){
 			redirect('Login');
 		}
 	}
+	
+	//add comment
 	public function comment($post_id){
 		$data = array(
 			'post_id' => $post_id,
@@ -77,11 +82,13 @@ public function user_login(){
 		redirect('Login/post/'.$post_id);
 	
 	}
+	//logout from application
 	public function Logout(){
 		$this->session->unset_userdata('user_id');
 		redirect('Login/user_login');
 	}
 
+	//add new blog post
 	public function create_post($user_id){
 		$data = array(
 			'user_id'=> $user_id,
@@ -92,15 +99,18 @@ public function user_login(){
 		if($this->user_model->create_post($data)){
 
 
-			echo "<script>alert('Post Created');</script>";
+			echo "<script>alert('Post Created Successfully');</script>";
 		}
 		else{
 			redirect('Login/Create');
 		}
 	}
-	// public function Like($post_id){
-	// 	$this->user_model->increase_likes($post_id);
-	// }
+	
+	//add like to post
+	public function Like($post_id){
+		$this->user_model->increase_likes($post_id);
+		//revert response to user
+	}
 	 
 	public function Post($post_id){
 		$data['categories'] = $this->user_model->get_categories();
@@ -156,7 +166,8 @@ public function user_login(){
 			$this->load->view('Home/main_footer');
 		}
 	}
-
+	
+	//check admin session
 	public function loginforYk(){
 		if($this->session->userdata('admin_name')){
 			redirect('Admin');
@@ -166,6 +177,7 @@ public function user_login(){
 		}
 	}
 
+	//authenticate admin user
 	public function AdminAuthentication(){
 		if($this->Admin_model->checkAdminCredential())
 		{
@@ -173,7 +185,7 @@ public function user_login(){
 			redirect('Admin');
 		}
 		else{
-
+			//redirect back to page from where its called
 		}
 	}
 }
