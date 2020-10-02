@@ -28,13 +28,16 @@ class User_model extends CI_Model{
 	 public function create_post($data){
 	 	$this->db->insert('posts',$data);
 	 	$this->db->trans_complete();
-    	return $this->db->insert_id();
+    		return $this->db->insert_id();
 	 }
-	 // public function increase_likes($post_id){
-	 // 	$this->bd->get_where('like',array('post_id'=>$post_id));
-
-	 // }
-	 // 
+	
+	//increase like 
+	 public function increase_likes($post_id){
+	 	$result = $this->db->get_where('like',array('post_id'=>$post_id))->result()[0];
+		 $like_count = $result->count + 1;
+		 $this->db->update('like',array('count' => $like_count), array('post_id'=>$post_id)));
+	 }
+	 
 	 
 	 public function get_categories(){
 	 	$query = $this->db->get('categories');
